@@ -1,0 +1,21 @@
+[
+{"name": "all applicants",
+"comparison": "a : Applicant()",
+"action": "a.addTask(\"review colleges\");\na.addTask(\"submit application\");"},
+
+{"name": "veteran",
+"comparison": "a : Applicant(isVeteran())",
+"action": "a.addTask(\"veteran services\");"},
+
+{"name": "married",
+"comparison": "a : Applicant(isMarried())",
+"action": "a.addTask(\"adult housing\");"},
+
+{"name": "disabled",
+"comparison": "a : Applicant(isDisabled())",
+"action": "a.addTask(\"disabled applicant services\");\na.addTask(\"parking services\");"},
+
+{"name": "parent",
+"comparison": "a : Applicant(isParent())",
+"action": "a.addTask(\"adult housing\");\na.addTask(\"daycare service\");"}
+]

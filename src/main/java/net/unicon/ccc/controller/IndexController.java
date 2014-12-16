@@ -1,13 +1,11 @@
 package net.unicon.ccc.controller;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import net.unicon.ccc.engine.RulesEngine;
 import net.unicon.ccc.model.Rule;
-import net.unicon.ccc.model.Student;
-import net.unicon.ccc.model.Teacher;
+import net.unicon.ccc.model.Applicant;
 import net.unicon.ccc.service.RulesService;
 
 import org.apache.log4j.Logger;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -31,8 +28,7 @@ public class IndexController {
 	@Autowired
 	private RulesEngine rulesEngine;
 	
-	private Map<String, Student> students = new HashMap<String, Student>();
-	private Map<String, Teacher> teachers = new HashMap<String, Teacher>();
+	private List<Applicant> applicants = new ArrayList<Applicant>();
 	
 	private String result = "";
 	
@@ -41,8 +37,7 @@ public class IndexController {
     	ModelAndView modelAndView = new ModelAndView("index");
     	List<Rule> rules = ruleService.findAll();
     	modelAndView.addObject("rules", rules);
-    	modelAndView.addObject("students", students);
-    	modelAndView.addObject("teachers", teachers);
+    	modelAndView.addObject("applicants", applicants);
     	modelAndView.addObject("result", result);
 		return modelAndView;
 	}
@@ -61,66 +56,48 @@ public class IndexController {
     	return modelAndView;
     }
     
-    @RequestMapping(value="/addStudent", method = RequestMethod.POST)
-//    public ModelAndView addStudent(@RequestParam("name") String name, @RequestParam("grade") String grade, @RequestParam("specialNeed") String specialNeed) {
-    public ModelAndView addStudent(@ModelAttribute("student") Student student, BindingResult result) {
+    @RequestMapping(value="/addApplicant", method = RequestMethod.POST)
+    public ModelAndView addApplicant(@ModelAttribute("applicant") Applicant applicant, BindingResult result) {
     	if (result.hasErrors()) {
     		for (Object obj: result.getAllErrors()) {
     			log.info("error: [" + obj.toString() + "]");
     		}
     	}
-//    	Student student = new Student();
-//    	student.setName(name);
-//    	student.setGrade(grade);
-//    	student.setSpecialNeed(specialNeed);
-    	log.info("student.veteran: [" + student.isVeteran() + "]");
-    	students.put(student.getName(), student);
-    	ModelAndView modelAndView = new ModelAndView("redirect:/index");
-    	return modelAndView;    	
-    }
-    
-    @RequestMapping("/deleteStudent/{studentName}")
-    public ModelAndView deleteStudent(@PathVariable("studentName") String studentName) {
-    	students.remove(studentName);
-    	ModelAndView modelAndView = new ModelAndView("redirect:/index");
-    	return modelAndView;    	
-    }
-    
-//    @RequestMapping("/addTeacher")
-//    public ModelAndView addTeacher(@RequestParam("name") String name, @RequestParam("grade") String grade, @RequestParam("specialNeed") String specialNeed) {
-//    	Teacher teacher = new Teacher();
-//    	teacher.setName(name);
-//    	teacher.setGrade(grade);
-//    	teacher.setSpecialNeed(specialNeed);
-//    	teachers.put(teacher.getName(), teacher);
-//    	ModelAndView modelAndView = new ModelAndView("redirect:/index");
-//    	return modelAndView;    	
-//    }
-//    
-//    @RequestMapping("/deleteTeacher/{teacherName}")
-//    public ModelAndView deleteTeacher(@PathVariable("teacherName") String teacherName) {
-//    	teachers.remove(teacherName);
-//    	ModelAndView modelAndView = new ModelAndView("redirect:/index");
-//    	return modelAndView;    	
-//    }
-    
-    @RequestMapping("/run") 
-    public ModelAndView run() {
+    	applicants.add(applicant);
     	Iterable<Rule> rules = this.ruleService.findAll();
-    	rulesEngine.runRules(rules, students, teachers);
+    	rulesEngine.runRules(rules, applicant);
+    	ModelAndView modelAndView = new ModelAndView("redirect:/index");
+    	return modelAndView;    	
+    }
+    
+    @RequestMapping("/deleteApplicant/{applicantName}")
+    public ModelAndView deleteApplicant(@PathVariable("applicantName") String applicantName) {
+    	Applicant deletedApplicant = null;
+    	for (Applicant applicant: applicants) {
+    		if (applicant.getName().equals(applicantName)) {
+    			deletedApplicant = applicant;
+    		}
+    	}
+    	if (deletedApplicant != null) {
+    		applicants.remove(deletedApplicant);
+    	}
+    	ModelAndView modelAndView = new ModelAndView("redirect:/index");
+    	return modelAndView;    	
+    }
+    
+    @RequestMapping("/load") 
+    public ModelAndView run() {
+    	List<Rule> rules = rulesEngine.loadRules();
+    	for (Rule rule : rules) {
+        	ruleService.saveRule(rule);
+    	}
     	ModelAndView modelAndView = new ModelAndView("redirect:/index");
     	return modelAndView;
     }
     
     @RequestMapping("/reset")
     public ModelAndView reset() {
-    	students.clear();
-//    	for (Student student: students.values()) {
-//    		student.setTeacherName("");
-//    	}
-//    	for (Teacher teacher: teachers.values()) {
-//    		teacher.setCount(0);
-//    	}
+    	applicants.clear();
 		ModelAndView modelAndView = new ModelAndView("redirect:/index");
 		return modelAndView;
     }

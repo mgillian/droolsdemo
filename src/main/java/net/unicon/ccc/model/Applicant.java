@@ -1,15 +1,16 @@
 package net.unicon.ccc.model;
 
-public class Student {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Applicant {
 	
 	private String name;
-//	private String grade;
-//	private String teacherName;
-//	private String specialNeed;
 	private boolean veteran;
 	private boolean married;
 	private boolean parent;
 	private boolean disabled;
+	private List<String> tasks = new ArrayList<String>();
 
 	public String getName() {
 		return name;
@@ -18,30 +19,6 @@ public class Student {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-//	public String getGrade() {
-//		return grade;
-//	}
-//
-//	public void setGrade(String grade) {
-//		this.grade = grade;
-//	}
-//
-//	public String getTeacherName() {
-//		return teacherName;
-//	}
-//
-//	public void setTeacherName(String teacherName) {
-//		this.teacherName = teacherName;
-//	}
-//
-//	public String getSpecialNeed() {
-//		return specialNeed;
-//	}
-//
-//	public void setSpecialNeed(String specialNeed) {
-//		this.specialNeed = specialNeed;
-//	}
 
 	public boolean isVeteran() {
 		return veteran;
@@ -75,4 +52,17 @@ public class Student {
 		this.disabled = disabled;
 	}
 
+	public List<String> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<String> tasks) {
+		this.tasks = tasks;
+	}
+	
+	public void addTask(String task) {
+		if (!this.tasks.contains(task)) {
+			this.tasks.add(task);
+		}
+	}
 }
