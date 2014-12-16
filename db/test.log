@@ -1,0 +1,9 @@
+/*C1*/SET SCHEMA SYSTEM_LOBS
+INSERT INTO BLOCKS VALUES(0,2147483647,0)
+COMMIT
+/*C2*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C3*/SET SCHEMA PUBLIC
+ CREATE TABLE rules ( id INTEGER NOT NULL PRIMARY KEY, name varchar(255), description varchar(255), version varchar(8), comparison varchar(255), action varchar(255) )
+ CREATE INDEX name_index ON rules(name)
+DISCONNECT

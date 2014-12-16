@@ -1,0 +1,203 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"> 
+<head>
+<style>
+	.container {
+  		position: relative;
+  	}
+  	.headerItem {
+  		float: left;
+  		width: 100px;
+  	}
+	.form {
+		float: left;
+		width: 300px;
+	}
+	.table {
+		float:left;
+		width: 700px;
+	}
+	.floatClear {
+		clear: left;
+	}
+	label {
+		display: block;
+		width: 150px;
+		float: left;
+	}
+</style>	
+</head>
+<body>
+	<div class="container">
+	
+	<div class="header">
+	<div class="headerItem">
+	<h2>Run</h2>
+	<a href="/run">Run</a>
+	</div>
+	
+	<div class="headerItem">
+	<h2>Reset</h2>
+	<a href="/reset">Reset</a>
+	</div>
+	<br class="floatClear" />
+	</div>
+	
+	<div class="row">
+	<div class="form">
+	<h2>Add Student</h2>
+	<form action="/addStudent" method="post">
+		<label forName="name">Name</label>
+		<input type="text" name="name"/>
+		<br />
+		<!--
+		<label forName="grade">Grade</label>
+		<input type="text" name="grade" />
+		<br />
+		<label forName="specialNeed">Special Need?</label>
+		<input type="text" name="specialNeed" />
+		<br />
+		-->
+		<label forName="veteran">Veteran?</label>
+		<input type="checkbox" name="veteran" />
+		<br />
+		<input type="submit" />
+	</form>
+	</div>
+	
+	<div class="table">
+	<h2>Students</h2>
+	<table>
+		<thead>
+			<td>name</td>
+			<!--
+			<td>grade</td>
+			<td>specialNeed</td>
+			<td>teacher</td>
+			-->
+			<td>veteran</td>
+		</thead>
+		<tbody>
+			<tr th:if="${students.size() == 0}">
+				<td colspan="5">No students</td>
+			</tr>
+			<tr th:each="entry : ${students}">
+				<td><a th:href="'/deleteStudent/' + ${entry.value.name}" th:text="${entry.value.name}"/></td>
+				<!--
+				<td th:text="${entry.value.grade}">grade</td>
+				<td th:text="${entry.value.specialNeed}">need</td>				
+				<td th:text="${entry.value.teacherName}">teacher</td>
+				-->
+				<td th:text="${entry.value.veteran}">veteran</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	
+	<br class="floatClear" />	
+	</div>
+	
+	
+	<!--
+	<div class="row">
+	<div class="form">
+	<h2>Add Teacher</h2>
+	<form action="/addTeacher" method="post">
+		<label forName="name">Name</label>
+		<input type="text" name="name"/>
+		<br />
+		<label forName="grade">Grade</label>
+		<input type="text" name="grade" />
+		<br />
+		<label forName="specialNeed">Special Need?</label>
+		<input type="text" name="specialNeed" />
+		<br />		
+		<input type="submit" />
+	</form>
+	</div>
+	
+	<div class="table">
+	<h2>Teachers</h2>
+	<table>
+		<thead>
+			<td>name</td>
+			<td>grade</td>
+			<td>specialNeed</td>
+			<td>count</td>
+		</thead>
+		<tbody>
+			<tr th:if="${teachers.size() == 0}">
+				<td colspan="5">No teachers</td>
+			</tr>
+			<tr th:each="entry : ${teachers}">
+				<td><a th:href="'/deleteTeacher/' + ${entry.value.name}" th:text="${entry.value.name}"/></td>
+				<td th:text="${entry.value.grade}">grade</td>
+				<td th:text="${entry.value.specialNeed}">need</td>
+				<td th:text="${entry.value.count}">count</td>				
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	<br class="floatClear" />	
+	</div>
+	-->
+	
+	<div class="row">
+	<div class="form">
+	<h2>Add Rule</h2>
+	<form action="/addRule" method="post">
+		<label forName="name">Name</label>
+		<input type="text" name="name" />
+		<br />
+		<label forName="description">Description</label>
+		<input type="text" name="description" />
+		<br />
+		<label forName="comparison">Comparison</label>
+		<textarea rows="4" cols="50" name="comparison" />
+		<!--
+		<input type="text" name="comparison" />
+		-->
+		<br />
+		<label forName="action">Action</label>
+		<textarea rows="4" cols="50" name="action" />
+		<!--
+		<input type="text" name="action" />
+		-->
+		<br />
+		<input type="submit" />
+	</form>
+	</div>
+	
+	<div class="table">
+	<h2>Rules</h2>
+	<table>
+		<thead>
+			<tr>
+				<td>id</td>
+				<td>name</td>
+				<td>description</td>
+				<td>comparison</td>
+				<td>action</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${rules.size() == 0}">
+				<td colspan="5">No tasks</td>
+			</tr>
+			<tr th:each="rule : ${rules}">
+				<td><a th:href="'/deleteRule/' + ${rule.id}" th:text="${rule.id}"/></td>
+				<td th:text="${rule.name}">name</td>
+				<td th:text="${rule.description}">description</td>
+				<td th:text="${rule.comparison}">comparison</td>
+				<td th:text="${rule.action}">action</td>				
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	<br class="floatClear" />	
+	</div> <!-- ROW -->
+	
+	</div> <!-- CONTAINER -->
+</body>
+
+</html>
